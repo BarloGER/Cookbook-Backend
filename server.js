@@ -20,9 +20,11 @@ app
 .route('/recipeOverview')
 .get((req, res) => {res.status(200).send('Rezeptübersicht')})
 
+
 app
 .route('/aboutUs')
 .get((req, res) => {res.status(200).send('Über uns')})
+
 
 app
 .route('/recipe')
