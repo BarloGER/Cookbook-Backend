@@ -15,8 +15,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 
-app.route("/").get((req, res) => {
-  res.status(200).send("Home");
+app.get("/", async (req, res) => {
+  try {
+    const { rows } = await pool.query("SELECT * FROM recipes");
+    console.log(rows);
+    res.json(rows);
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 app.route("/recipeOverview").get((req, res) => {
