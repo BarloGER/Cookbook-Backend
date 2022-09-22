@@ -36,3 +36,50 @@ app.route("/aboutUs").get((req, res) => {
 app.route("/recipe").get((req, res) => {
   res.status(200).send("Rezept");
 });
+
+app.post("/CreateRecipe", async (req, res) => {
+  const {
+    image,
+    title,
+    requiredTime,
+    difficulty,
+    author,
+    date,
+    description,
+    ingredients,
+  } = req.body;
+
+  if (
+    !image ||
+    !title ||
+    !requiredTime ||
+    !difficulty ||
+    !author ||
+    !date ||
+    !description ||
+    !ingredients
+  ) {
+    return res.status(400).send("Please fill in all fields.");
+  }
+  try {
+    const {
+      rows: [createdRecipe],
+    } = await pool.query(
+      "INSERT INTO recipes(image, title, required_time, difficulty, author, date, description, ingredients) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *;",
+      [
+        image,
+        title,
+        requiredTime,
+        difficulty,
+        author,
+        date,
+        description,
+        ingredients,
+      ]
+    );
+    return res.status(201).send(createdRecipe);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).send("Something went wrong");
+  }
+});
