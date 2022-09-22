@@ -37,7 +37,7 @@ app.route("/recipe").get((req, res) => {
   res.status(200).send("Rezept");
 });
 
-app.post("/CreateRecipe", async (req, res) => {
+app.post("/", async (req, res) => {
   const {
     image,
     title,
