@@ -18,23 +18,10 @@ app.use(cors());
 app.get("/", async (req, res) => {
   try {
     const { rows } = await pool.query("SELECT * FROM recipes");
-    console.log(rows);
     res.json(rows);
   } catch (err) {
     console.log(err);
   }
-});
-
-app.route("/recipeOverview").get((req, res) => {
-  res.status(200).send("Rezeptübersicht");
-});
-
-app.route("/aboutUs").get((req, res) => {
-  res.status(200).send("Über uns");
-});
-
-app.route("/recipe").get((req, res) => {
-  res.status(200).send("Rezept");
 });
 
 app.post("/", async (req, res) => {
@@ -48,7 +35,7 @@ app.post("/", async (req, res) => {
     description,
     ingredients,
   } = req.body;
-
+  console.log(req.body);
   if (
     !image ||
     !title ||
@@ -65,7 +52,7 @@ app.post("/", async (req, res) => {
     const {
       rows: [createdRecipe],
     } = await pool.query(
-      "INSERT INTO recipes(image, title, required_time, difficulty, author, date, description, ingredients) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *;",
+      `INSERT INTO recipes(image, title, required_time, difficulty, author, date, description, ingredients) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *;`,
       [
         image,
         title,
@@ -73,8 +60,8 @@ app.post("/", async (req, res) => {
         difficulty,
         author,
         date,
-        description,
-        ingredients,
+        [description],
+        [ingredients],
       ]
     );
     return res.status(201).send(createdRecipe);
