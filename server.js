@@ -8,7 +8,7 @@ const pg = require("pg");
 const PORT = process.env.PORT || 8080;
 
 // routes import
-const recipesRouter = require("./routes/recipes");
+const recipesRouter = require("./Routes/recipes");
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
