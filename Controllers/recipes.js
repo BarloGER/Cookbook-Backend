@@ -5,7 +5,7 @@ const { body, validationResult } = require("express-validator");
 const getAllRecipes = async (req, res) => {
   try {
     const { rows: allRecipes, rowCount } = await pool.query(
-      "SELECT * FROM recipes;"
+      'SELECT * FROM recipes ORDER by "Recipe_id";'
     );
     console.log("all recipes", allRecipes);
     if (!rowCount) return res.status(404).send("No recipes found");
